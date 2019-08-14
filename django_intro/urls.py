@@ -23,8 +23,11 @@ from pages import views
 # www.ssafy.com/index   => views.index
 urlpatterns = [
     # path('사용자가 접속하는 경로')
+    path('greeting/<str:name>/', views.greeting),
     path('index/', views.index),
     path('introduce/', views.introduce),
     path('admin/', admin.site.urls),
-    path('dinner/', views.dinner),
+    path('dinner/<str:name>/', views.dinner),
+    path('image/', views.image),
+    path('times/<int:num1>/<int:num2>/', views.times),
 ]
