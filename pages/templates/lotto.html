@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Lotto</title>
+</head>
+<body>
+  <h1>인생 로또 추첨 결과</h1>
+  <p>당첨 번호는 {{ real_lotto }}</p>
+  <p>당신의 번호는 {{ lotto }}</p>
+  {% if real_lotto == lotto %}
+  <p>당첨입니다. 집에 갑시다</p>
+  {% else %}
+  <p>코딩 계속 하세요.</p>
+  {% endif %}
+</body>
+</html>

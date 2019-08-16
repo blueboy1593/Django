@@ -1,6 +1,8 @@
 # pages/views
 from django.shortcuts import render
+from datetime import datetime
 import random
+
 
 # 사용자가 보내는 요청에 대한 정보는 request에 있다.
 def index(request): # 첫번째 인자는 반드시 request
@@ -52,9 +54,39 @@ def times(request, num1, num2):
     return render(request, 'times.html', context)
 
 
+def template_language(request):
+    menus = ['짜장면', '탕수육', '짬뽕', '양장피']
+    my_sentence = 'Lift is short, you need python'
+    messages = ['apple', 'banana', 'cucumber', 'mango']
+    datetimenow = datetime.now()
+    empty_list=[]
+    context = {
+        'menus' : menus,
+        'my_sentence': my_sentence,
+        'messages': messages,
+        'empty_list': empty_list,
+        'datetimenow': datetimenow,
+    }
+    return render(request, 'template_language.html', context)
 
 
+def isitbirthday(request, birthday):
+    my_birthday = birthday
+    context = {
+        'my_birthday' : my_birthday,
+    }
+
+    return render(request, 'isitbirthday.html', context)
 
 
+def lotto(request):
+    real_lotto = [21, 25, 30, 32, 40, 42]
+    lotto = sorted(random.sample(range(1,46), 6))
 
+    context = {
+        'real_lotto' : real_lotto,
+        'lotto' : lotto,
+    }
+    
+    return render(request, 'lotto.html', context)
 
