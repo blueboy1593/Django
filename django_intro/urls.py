@@ -23,6 +23,8 @@ from pages import views
 # www.ssafy.com/index   => views.index
 urlpatterns = [
     # path('사용자가 접속하는 경로')
+    path('static_example', views.static_example),
+
     path('result/', views.result), 
     path('search/', views.search),
     path('template_language/', views.template_language),
