@@ -90,3 +90,35 @@ def lotto(request):
     
     return render(request, 'lotto.html', context)
 
+
+def search(request):
+    return render(request, 'search.html')
+
+
+def result(request):
+    category = request.GET.get('category')
+    query = request.GET.get('query')
+    context = {
+        'query': query,
+        'category': category,
+    }
+    return render(request, 'result.html', context)
+
+
+def lotto_pick(request):
+
+    return render(request, 'lotto_pick.html')
+
+
+def lotto_result(request):
+    real_lotto = [21, 25, 30, 32, 40, 42]
+    my_lotto = []
+    for i in range(1,7):
+        my_lotto.append(int(request.GET.get(f'num{i}')))
+    my_lotto= sorted(my_lotto)
+    context = {
+        'real_lotto' : real_lotto,
+        'my_lotto' : my_lotto,
+    }
+    return render(request, 'lotto_result.html', context)
+
