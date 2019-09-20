@@ -11,7 +11,7 @@ urlpatterns = [
     # path('new/', views.new, name='new'),
     # create로 들어올 것이기 때문에 new의 url은 없애버렸다.
     path('create/', views.create, name='create'),
-    # 4번째 article 삭제할 거
     path('<int:article_pk>/delete/', views.delete, name='delete'),
     path('<int:article_pk>/update/', views.update, name='update'),
+    path('<int:article_pk>/comments/', views.comments_create, name='comments_create'),
 ]
