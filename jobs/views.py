@@ -27,7 +27,7 @@ def new(request):
         data1 = requests.get(new_url).json()
         data = data1['data'][0]['images']['downsized']['url']
         context = {'data': data,
-                'job': job,
+                'job': job, 
         }
         return render(request, 'jobs/result.html', context)
 

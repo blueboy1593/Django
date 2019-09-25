@@ -1,4 +1,6 @@
 from django.db import models
+from imagekit.processors import Thumbnail
+from imagekit.models import ImageSpecField
 
 # Create your models here.
 class Article(models.Model):
@@ -9,6 +11,12 @@ class Article(models.Model):
     # null: DB와 관련되어 있다.
     # '', Null 이런식으로 저장 가능.
     image = models.ImageField(blank=True)
+    image_thumbnail = ImageSpecField(
+        source='image',
+        processors=[Thumbnail(200, 200)],
+        format='JPEG',
+        options={'quality': 90},
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
