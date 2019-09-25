@@ -17,3 +17,4 @@ urlpatterns = [
     # /articles/3/comments/2/delete 이런식으로 url을 만들어주고 싶다.
     path('<int:article_pk>/comments/<int:comment_pk>/delete/', views.comments_delete, name='comments_delete'),
 ]
+

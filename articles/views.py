@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Article, Comment
+from IPython import embed
 
 # articles 의 메인 페이지, article list 를 보여 줌
 def index(request):
@@ -17,7 +18,7 @@ def detail(request, article_pk):
 
     context = {
         'article': article,
-        'comments': comments,    
+        'comments': comments,
     }
     # return redirect('detail', context)
     return render(request, 'articles/detail.html', context)
@@ -32,11 +33,12 @@ def create(request):
     if request.method == 'POST':
         title = request.POST.get('title') # 데이터 따오기
         content = request.POST.get('content')
+        image = request.FILES.get('image')
         article = Article()
-        article.title = title
-        article.content = content
+        article = Article(title=title, content=content, image=image)
+        # article.title = title
+        # article.content = content
         article.save()
-
         # return render(request, 'articles/create.html')
         # return redirect(f'/articles/{article.pk}/')
         return redirect('articles:detail', article.pk)
@@ -64,7 +66,10 @@ def update(request, article_pk):
 
         title = request.POST.get('title')
         content = request.POST.get('content')
-
+        image = request.FILES.get('image')
+        print(image)
+        if image != None:
+            article.image = image
         article.title = title
         article.content = content
         article.save()
