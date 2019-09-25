@@ -13,8 +13,7 @@ def detail(request, article_pk):
     # SELECT * FROM articles WHERE pk = 3 이런 느낌을 구현하는 것이다.
     # article = Article.objects.get(pk=article_pk)
     article = get_object_or_404(Article, pk=article_pk)
-
-    comments = article.comment_set.all()
+    comments = article.comments.all()
 
     context = {
         'article': article,
@@ -80,12 +79,30 @@ def update(request, article_pk):
     
 
 def comments_create(request, article_pk):
+    article = get_object_or_404(Article, pk=article_pk)
     # article_pk 에 해당하는 article 에 새로운 comment 생성
-    content = request.POST.get('content')
-    comment = Comment()
-    comment.content = content
-    # comment.article = article
-    comment.article_id = article_pk
-    comment.save()
-    # 생성한 다음 redirect
+    if request.method == 'POST':
+        content = request.POST.get('content')
+        comment = Comment()
+        comment.content = content
+        # comment.article = article
+        comment.article_id = article_pk
+        comment.save()
+        # 생성한 다음 redirect
+        return redirect('articles:detail', article_pk)
+    else:
+        return redirect('articles:detail', article_pk)
+    # 우리는 포스트 요청으로만 정보를 받기
+    
+# 댓글을 삭제하는 logic을 만들어봅시다.
+
+def comments_delete(request, article_pk, comment_pk):
+    # POST 요청으로 들어왔다면
+    if request.method == 'POST':
+    # comment_pk 에 해당하는 댓글 삭제
+    # 댓글 삭제 후 detail 페이지로 이동
+    # 특정 오브젝트를 받거나 말거나 라는 코드....? 아니면 말고 이런식의 코드인 것 같다!
+        comment = get_object_or_404(Comment, pk=comment_pk)
+    # 여기서 바로 지워버리는 작업이 가능한가 봄.
+        comment.delete()
     return redirect('articles:detail', article_pk)
