@@ -17,15 +17,17 @@ def new(request):
         # if person:
         #     context = {'person': person}
         # else:
+        profile_image = request.FILES.get('profile_image')
         job = Job()
         job.name = name
         job.past_job = fake.job()
+        job.profile_image = profile_image
         job.save()
         new_url = url + job.past_job + url2
         data1 = requests.get(new_url).json()
         data = data1['data'][0]['images']['downsized']['url']
         context = {'data': data,
-                'jobbb': job,
+                'job': job,
         }
         return render(request, 'jobs/result.html', context)
 

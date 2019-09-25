@@ -4,9 +4,11 @@
 
 {% block body %}
 <h1>전생 직업 찾기 시작!</h1>
-  <form action="{% url 'jobs:new' %}" method="POST">
+  <form action="{% url 'jobs:new' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="text" name="name"><br>
+    <label for="profile_image">프로필 사진: </label>
+    <input type="file" name="profile_image" id="profile_image" accept="image/*"><br>
     <button type="submit">생성하기</button>
   </form>
 {% endblock body %}
