@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     # Local apps
     'articles',
 
+    'django_extensions',
+
     # Django apps
     'django.contrib.admin',
     'django.contrib.auth',

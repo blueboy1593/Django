@@ -12,6 +12,19 @@ class Article(models.Model):
         ordering = ('-pk', )
 
 
+class Comment(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='comments')
+    nickname = models.CharField(max_length=15)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-pk']
+
+    def __str__(self):
+        return self.content
+
+
 class Person(models.Model):
     name = models.CharField(max_length=10)
     email = models.CharField(

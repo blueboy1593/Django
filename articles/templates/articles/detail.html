@@ -4,7 +4,7 @@
 
 {% block container %}
 <h2>{{ article.title }}</h2>
-<p>{{ article.created_at }}</p>
+<p>작성일자: {{ article.created_at }}</p>
 <hr>
 <p>{{ article.content }}</p>
 <hr>
@@ -13,5 +13,25 @@
   {% csrf_token %}
   <button type="submit">[삭제하기]</button>
 </form>
+
+<form method="POST" action="{% url 'articles:comments_create' article.pk %}">
+  {% csrf_token %}
+  {{ comment_form.as_p }}
+  <button type="submit">생성하기</button>
+</form>
+
+<ul>
+  {% for comment in comments %}
+    <li>
+      {{ comment.pk }}. {{ comment.nickname }}의 답글: {{ comment.content }}
+      <form action="{% url 'articles:comments_delete' article.pk comment.pk %}" method="POST">
+        {% csrf_token %}
+        <button type="submit">삭제하기</button>
+      </form>
+    </li>
+    {% empty %}
+      <p>아직 댓글이 없습니다</p>
+  {% endfor %}
+</ul>
 
 {% endblock container %}

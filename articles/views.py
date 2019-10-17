@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST, require_GET
-from .models import Article
-from .forms import ArticleForm
+from .models import Article, Comment
+from .forms import ArticleForm, CommentForm
 # from IPython import embed
 
 
@@ -17,7 +17,14 @@ def detail(request, article_pk):
     # 사용자가 url 에 적어보낸 article_pk를 통해 디테일 페이지를 보여준다.
     # Article.objects.get(pk=article_pk)
     article = get_object_or_404(Article, pk=article_pk)
-    context = {'article': article}
+    comments = article.comments.all()
+    comment_form = CommentForm()
+    # form = CommentForm()
+    context = {
+        'article': article,
+        'comments': comments,
+        'comment_form': comment_form,
+        }
     return render(request, 'articles/detail.html', context)
 
 
@@ -59,3 +66,35 @@ def delete(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
     article.delete()
     return redirect('articles:index')
+
+@require_POST
+def comments_create(request, article_pk):
+    # article = get_object_or_404(Article, pk = article_pk)
+    
+    # if request.method == 'POST':
+    form = CommentForm(request.POST)
+    if form.is_valid():
+        comment = form.save(commit=False)
+        # 완전히 데이터베이스에 저장하지는 마라?? 임시로 빼놓으라는 것? 저장해버리면 안되서 그런가
+        comment.article_id = article_pk
+        comment.save()
+        # 우리에게 필요한 데이터만 넣고 다시 저장한다 뭐 이런 뜻인가보다. 필요하지 않은 정보는??
+    return redirect('articles:detail', article_pk)
+    # 이렇게 되면 if 문 밖에서 유효하지 않을 때 알아서 다시 돌아가는 것이다.
+
+    # 여기는 내가 한 부분이고 위에는 강사님이 알려주신 것이다.
+    # if form.is_valid():
+    #     comment = form.save(commit=False)
+    #     comment.article_id = article_pk
+    #     comment.save()
+    #     return redirect('articles:detail', article_pk)
+    # else:
+    #     form = CommentForm()
+    # context = {'form': form}
+    # return render(request, 'articles/detail.html', context)
+
+@require_POST
+def comments_delete(request, article_pk, comment_pk):
+    comment = get_object_or_404(Comment, pk=comment_pk)
+    comment.delete()
+    return redirect('articles:detail', article_pk)

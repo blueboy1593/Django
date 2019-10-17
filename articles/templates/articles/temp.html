@@ -1,0 +1,12 @@
+<form method="post" action="{% url 'articles:comments_create' article.pk %}">
+  {% csrf_token %}
+  {{ form.as_table }}
+  <button type="submit">댓글 달아버리기</button>
+</form>
+
+
+<form action="{% url 'articles:comments_create' article.pk %}" method="POST">
+  {% csrf_token %}
+  {{ form.as_table }}
+  <button type="submit">댓글 작성</button>
+</form>
