@@ -17,17 +17,25 @@
 <form method="POST" action="{% url 'articles:comments_create' article.pk %}">
   {% csrf_token %}
   {{ comment_form.as_p }}
-  <button type="submit">생성하기</button>
+  {% if user.is_authenticated %}
+    <button type="submit">생성하기</button>
+  {% else %}
+    <a href="{% url 'accounts:login'%}">[로그인]</a>
+  {% endif %}
 </form>
 
 <ul>
   {% for comment in comments %}
     <li>
       {{ comment.pk }}. {{ comment.nickname }}의 답글: {{ comment.content }}
+      {% if user.is_authenticated %}
       <form action="{% url 'articles:comments_delete' article.pk comment.pk %}" method="POST">
         {% csrf_token %}
         <button type="submit">삭제하기</button>
+        {% comment %} {% else %}
+          <a href="{% url 'accounts:login'%}">[로그인]</a> {% endcomment %}
       </form>
+      {% endif %}
     </li>
     {% empty %}
       <p>아직 댓글이 없습니다</p>

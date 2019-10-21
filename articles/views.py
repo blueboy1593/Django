@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST, require_GET
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from .models import Article, Comment
 from .forms import ArticleForm, CommentForm
 # from IPython import embed
@@ -7,6 +9,7 @@ from .forms import ArticleForm, CommentForm
 
 @require_GET
 def index(request):
+
     articles = Article.objects.all()
     context = {'articles': articles}
     return render(request, 'articles/index.html', context)
@@ -28,6 +31,7 @@ def detail(request, article_pk):
     return render(request, 'articles/detail.html', context)
 
 
+@login_required
 def create(request):
     if request.method == 'POST':
         # Article 을 생성해달라고 하는 요청
@@ -48,6 +52,7 @@ def create(request):
     return render(request, 'articles/create.html', context)
 
 
+@login_required
 def update(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
     if request.method == 'POST':
@@ -61,25 +66,29 @@ def update(request, article_pk):
         return render(request, 'articles/update.html', {'form': form})
 
 
+# @login_required
 @require_POST
 def delete(request, article_pk):
-    article = get_object_or_404(Article, pk=article_pk)
-    article.delete()
+    if request.user.is_authenticated:
+        article = get_object_or_404(Article, pk=article_pk)
+        article.delete()
+        
     return redirect('articles:index')
+
 
 @require_POST
 def comments_create(request, article_pk):
     # article = get_object_or_404(Article, pk = article_pk)
-    
     # if request.method == 'POST':
-    form = CommentForm(request.POST)
-    if form.is_valid():
-        comment = form.save(commit=False)
+    if request.user.is_authenticated:
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
         # 완전히 데이터베이스에 저장하지는 마라?? 임시로 빼놓으라는 것? 저장해버리면 안되서 그런가
-        comment.article_id = article_pk
-        comment.save()
+            comment.article_id = article_pk
+            comment.save()
         # 우리에게 필요한 데이터만 넣고 다시 저장한다 뭐 이런 뜻인가보다. 필요하지 않은 정보는??
-    return redirect('articles:detail', article_pk)
+        return redirect('articles:detail', article_pk)
     # 이렇게 되면 if 문 밖에서 유효하지 않을 때 알아서 다시 돌아가는 것이다.
 
     # 여기는 내가 한 부분이고 위에는 강사님이 알려주신 것이다.
@@ -95,6 +104,9 @@ def comments_create(request, article_pk):
 
 @require_POST
 def comments_delete(request, article_pk, comment_pk):
-    comment = get_object_or_404(Comment, pk=comment_pk)
-    comment.delete()
-    return redirect('articles:detail', article_pk)
+    if request.user.is_authenticated:
+        comment = get_object_or_404(Comment, pk=comment_pk)
+        comment.delete()
+        return redirect('articles:detail', article_pk)
+    return HttpResponse('You are Unauthorized', status=401)
+    # 인증되지 않았다는 내용
