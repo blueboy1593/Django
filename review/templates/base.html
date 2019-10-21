@@ -9,8 +9,12 @@
 <body>
   <header>
     <h1>저희 페이지에 오신 것을 환영합니다.</h1>
-    <a href="{% url 'articles:index' %}">[목록]</a>
-    <hr>
+    <p>
+     <span>Hello, {{ user.username }}</span>
+     <a href="{% url 'accounts:logout' %}">[로그아웃]</a>
+     <br>
+     <a href="{% url 'articles:index' %}">[목록]</a>
+    </p>
   </header>
   <nav></nav>
   {% block container %}{% endblock container %}
