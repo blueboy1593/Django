@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     # Local apps
     'articles',
     'accounts',
+    'manytoone',
     'django_extensions',
 
     # Django apps

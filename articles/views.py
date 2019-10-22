@@ -122,3 +122,15 @@ def comments_delete(request, article_pk, comment_pk):
         return redirect('articles:detail', article_pk)
     return HttpResponse('You are Unauthorized', status=401)
     # 인증되지 않았다는 내용
+
+
+def like(request, article_pk):
+    user = request.user
+    article = get_object_or_404(Article, pk=article_pk)
+    # GET으로 가지고오면 없을 때 에러를 내기 때문에 filter를 사용하는 것이다.
+    # 이 부분 헷갈리기 때문에...... 좀 다시볼 필요가 있다.
+    if article.liked_users.filter(pk=user.pk).exists(): # 1개의 데이터라도 존재하면 True
+        user.liked_articles.remove(article)
+    else:
+        user.liked_articles.add(article)
+    return redirect('articles:detail', article_pk)

@@ -10,6 +10,10 @@ class Article(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     # 한명의 user가 계속 article을 낼 건데 그러기 때문에 속하는 것일 것!!!)
+    liked_users = models.ManyToManyField( # article.liked_users.all()
+        settings.AUTH_USER_MODEL,
+        related_name='liked_articles', # user.liked_articles.all() => 유저가 좋아하는 모든 아티클
+        )
 
     class Meta:
         ordering = ('-pk', )

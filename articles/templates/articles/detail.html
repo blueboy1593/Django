@@ -7,6 +7,14 @@
 <p>작성일자: {{ article.created_at }}</p>
 <p>작성자: {{ article.user }}</p>
 <hr>
+<a href="{% url 'articles:like' article.pk%}">
+  {% if user in article.liked_users.all %}
+  <i class="fas fa-heart fa-lg"></i>
+  {% else %}
+  <i class="far fa-heart fa-lg" style="color-red"></i>
+  {% endif %}
+</a>
+<span>{{ article.liked_users.all | length }} 명이 이 글을 좋아합니다.</span>
 <p>{{ article.content }}</p>
 <hr>
 
