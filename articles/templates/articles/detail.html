@@ -5,14 +5,19 @@
 {% block container %}
 <h2>{{ article.title }}</h2>
 <p>작성일자: {{ article.created_at }}</p>
+<p>작성자: {{ article.user }}</p>
 <hr>
 <p>{{ article.content }}</p>
 <hr>
+
+{% if article.user == request.user %}
 <a href="{% url 'articles:update' article.pk %}">[수정하기]</a>
 <form action="{% url 'articles:delete' article.pk %}" method="post">
   {% csrf_token %}
   <button type="submit">[삭제하기]</button>
 </form>
+<hr>
+{% endif %}
 
 <form method="POST" action="{% url 'articles:comments_create' article.pk %}">
   {% csrf_token %}
@@ -27,11 +32,13 @@
 <ul>
   {% for comment in comments %}
     <li>
-      {{ comment.pk }}. {{ comment.nickname }}의 답글: {{ comment.content }}
+      {{ comment.pk }}. 작성자ID: {{ comment.user }}, 닉네임 {{ comment.nickname }}의 답글: {{ comment.content }}
       {% if user.is_authenticated %}
       <form action="{% url 'articles:comments_delete' article.pk comment.pk %}" method="POST">
         {% csrf_token %}
-        <button type="submit">삭제하기</button>
+        {% if comment.user == request.user %}
+          <button class="btn btn-danger" type="submit">삭제하기</button>
+        {% endif %}
         {% comment %} {% else %}
           <a href="{% url 'accounts:login'%}">[로그인]</a> {% endcomment %}
       </form>

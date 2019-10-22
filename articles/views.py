@@ -37,8 +37,12 @@ def create(request):
         # Article 을 생성해달라고 하는 요청
         form = ArticleForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('articles:index')
+            article = form.save(commit=False)
+            article.user = request.user
+            # 이 부분은 자동으로 해주는 건지 자동함수같은 느낌인건지 정확하게 모르겠다
+            article.save()
+            return redirect('articles:detail', article.pk)
+            # return redirect('articles:index')
         # else:
         #     context = {'form': form}
         #     return render(request, 'articles/create.html', context)
@@ -55,15 +59,19 @@ def create(request):
 @login_required
 def update(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
-    if request.method == 'POST':
-        form = ArticleForm(request.POST, instance=article)
+    # 이렇게 해주는 이유는 update를 url을 통해서 들어와서 수정해버리려 할 수 있기 때문이다.
+    if article.user == request.user:
+        if request.method == 'POST':
+            form = ArticleForm(request.POST, instance=article)
         # 기존의 instance에 우리가 form으로 받은 데이터를 추가하는 것이다.
-        if form.is_valid():
-            form.save()
-            return redirect('articles:detail', article_pk)
-    else: # GET method
-        form = ArticleForm(instance=article)
-        return render(request, 'articles/update.html', {'form': form})
+            if form.is_valid():
+                form.save()
+                return redirect('articles:detail', article_pk)
+        else: # GET method
+            form = ArticleForm(instance=article)
+    else:
+        return redirect('articles:detail', article_pk)
+    return render(request, 'articles/update.html', {'form': form})
 
 
 # @login_required
@@ -71,8 +79,10 @@ def update(request, article_pk):
 def delete(request, article_pk):
     if request.user.is_authenticated:
         article = get_object_or_404(Article, pk=article_pk)
-        article.delete()
-        
+        if article.user == request.user:
+            article.delete()
+        else:
+            return redirect('articles:detail', article_pk)
     return redirect('articles:index')
 
 
@@ -86,6 +96,7 @@ def comments_create(request, article_pk):
             comment = form.save(commit=False)
         # 완전히 데이터베이스에 저장하지는 마라?? 임시로 빼놓으라는 것? 저장해버리면 안되서 그런가
             comment.article_id = article_pk
+            comment.user = request.user
             comment.save()
         # 우리에게 필요한 데이터만 넣고 다시 저장한다 뭐 이런 뜻인가보다. 필요하지 않은 정보는??
         return redirect('articles:detail', article_pk)
@@ -106,7 +117,8 @@ def comments_create(request, article_pk):
 def comments_delete(request, article_pk, comment_pk):
     if request.user.is_authenticated:
         comment = get_object_or_404(Comment, pk=comment_pk)
-        comment.delete()
+        if comment.user == request.user:
+            comment.delete()
         return redirect('articles:detail', article_pk)
     return HttpResponse('You are Unauthorized', status=401)
     # 인증되지 않았다는 내용

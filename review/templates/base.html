@@ -18,12 +18,13 @@
     <p>
      <span>Hello, {{ user.username }}</span>
      <a href="{% url 'accounts:logout' %}">[로그아웃]</a>
+     <a href="{% url 'accounts:update' %}">[회원정보 수정]</a>
+     <a href="{% url 'accounts:password' %}">[비밀번호 변경]</a>
      <form action="{% url 'accounts:delete' %}" method="post">
       {% csrf_token %}
       <button type="submit">회원탈퇴</button>
      </form>
      <br>
-     <a href="{% url 'articles:index' %}">[목록]</a>
     </p>
     {% else %}
       <p>
@@ -31,12 +32,13 @@
         <a href="{% url 'accounts:signup' %}">[회원가입]</a>
       </p>
     {% endif %}
+    <a href="{% url 'articles:index' %}">[목록]</a>
   </header>
   <nav></nav>
   {% block container %}{% endblock container %}
-  <footer></footer>
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src=" {% static 'bootstrap/js/bootstrap.bundle.min.js' %} "></script>
+  {% comment %} <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-  <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script> {% endcomment %}
 </body>
 </html>

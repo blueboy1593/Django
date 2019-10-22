@@ -6,7 +6,7 @@ class ArticleForm(forms.ModelForm):
 
     class Meta:
         model = Article
-        fields = '__all__'
+        fields = ['title', 'content', ]
 
 class CommentForm(forms.ModelForm):
     # nickname = forms.CharField()
@@ -16,5 +16,5 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = '__all__'
         # fields = ('content', 'nickname',)
-        exclude = ['article', ]
+        exclude = ['article', 'user',]
         # 여기는 form으로 입력받을 데이터를 결정해주는 것이다.
