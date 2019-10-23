@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, Pass
 from django.contrib.auth import login as auth_login, logout as auth_logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
-from .forms import CustomUserChangeForm
+from .forms import CustomUserChangeForm, CustomUserCreationForm
 
 
 def signup(request):
@@ -11,7 +11,7 @@ def signup(request):
         return redirect('articles:index')
 
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             auth_login(request, user)
@@ -19,7 +19,7 @@ def signup(request):
         # 회원가입 로직
         
     else:   # GET
-        form = UserCreationForm()
+        form = CustomUserCreationForm()
     context = {'form': form}
     return render(request, 'accounts/form.html', context)
 
