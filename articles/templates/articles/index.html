@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% comment %} static 파일들을 불러오겠다. {% endcomment %}
+{% load static %}
+
+{% block title %}Articles{% endblock title %}
+
+{% block body %}
+  <h1>Articles</h1>
+  <a href="{% url 'articles:create' %}">[작성하기]</a>
+  <img src="{% static 'articles/images/gazua.jpeg' %}" alt="gazua">
+  <hr>
+  {% for article in articles %}
+  <div>
+    {% if article.image %}
+    <img src="{{ article.image_thumbnail.url }}" alt="{{ article.image }}">
+    {% endif %}
+    <h3><a href="{% url 'articles:detail' article.pk %}"{{ article.pk }}>{{ article.pk }}. {{ article.title }}</a></h3>
+    {% comment %} 1. 안녕하세요 이런식으로 하기 위해서임. {% endcomment %}
+    <p>{{ article.content }}</p>
+  </div>
+  <br>
+  {% endfor %}
+{% endblock body %}

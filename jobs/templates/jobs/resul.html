@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Jobs Result{% endblock title %}
+
+{% block body %}
+  <h1>전생 직업 결과입니다.</h1>
+  <hr>
+  {% for job in jobs %}
+  <div>
+    <p>{{ job.name }}</p>
+    <p>{{ job.past_job }}</p>
+    
+  </div>
+  <br>
+  {% endfor %}
+{% endblock body %}
