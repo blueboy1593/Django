@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Isitbirthday</title>
+</head>
+<body>
+  <h1>생일인지 한번 맞춰볼까요?</h1>
+  <h2>생일 날짜를 입력해주세요.(년도 제외)</h2>
+  {% now "md" as nowdate %}
+  <p>{{ nowdate }}</p>
+  <p>{{ my_birthday }}</p>
+  {% if my_birthday == nowdate %}
+    <p>오늘 생일이시군요!!</p>
+  {% else %}
+    <p>오늘 생일이 아니네요~</p>
+  {% endif %}
+</body>
+</html>
