@@ -1,0 +1,42 @@
+- model: articles.article
+  pk: 1
+  fields:
+    title: "\uCCAB\uBC88\uC9F8 \uD0C0\uC774\uC744"
+    content: ''
+    created_at: 2019-10-16 01:23:43.254717+00:00
+    updated_at: 2019-10-16 01:23:43.254717+00:00
+- model: articles.article
+  pk: 2
+  fields:
+    title: "\uB450\uBC88\uC9F8 \uC544\uD2F0\uD074"
+    content: ''
+    created_at: 2019-10-16 01:24:31.310371+00:00
+    updated_at: 2019-10-16 01:24:31.310371+00:00
+- model: articles.article
+  pk: 3
+  fields:
+    title: "\uB4C0\uAC1C\uB450\uAC1C"
+    content: "\uD6C4\uD788\uD788\u3163"
+    created_at: 2019-10-16 05:08:50.445965+00:00
+    updated_at: 2019-10-16 05:08:50.445965+00:00
+- model: articles.article
+  pk: 4
+  fields:
+    title: '35235'
+    content: '322235'
+    created_at: 2019-10-16 05:27:20.120212+00:00
+    updated_at: 2019-10-16 05:27:20.120212+00:00
+- model: articles.article
+  pk: 5
+  fields:
+    title: "\uB4C0\uAC1C\uB450\uAC1C"
+    content: "\uD6C4\uD788\uD788\u3163sg"
+    created_at: 2019-10-16 07:17:31.620710+00:00
+    updated_at: 2019-10-16 07:17:31.620710+00:00
+- model: articles.article
+  pk: 9
+  fields:
+    title: "\uD558\uB098 \uB354 \uB9F9\uAE00\uC5B4"
+    content: "\uADF8\uB798\uADF8\uB798"
+    created_at: 2019-10-16 07:33:09.668538+00:00
+    updated_at: 2019-10-16 07:33:09.668538+00:00

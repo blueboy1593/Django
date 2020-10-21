@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}Article::Detail{% endblock title %}
+
+{% block container %}
+<h2>{{ article.title }}</h2>
+<p>작성일자: {{ article.created_at }}</p>
+<p>작성자: {{ article.user }}</p>
+<hr>
+<a href="{% url 'articles:like' article.pk%}">
+  {% if user in article.liked_users.all %}
+  <i class="fas fa-heart fa-lg"></i>
+  {% else %}
+  <i class="far fa-heart fa-lg" style="color-red"></i>
+  {% endif %}
+</a>
+<span>{{ article.liked_users.all | length }} 명이 이 글을 좋아합니다.</span>
+<p>{{ article.content }}</p>
+<hr>
+
+{% if article.user == request.user %}
+<a href="{% url 'articles:update' article.pk %}">[수정하기]</a>
+<form action="{% url 'articles:delete' article.pk %}" method="post">
+  {% csrf_token %}
+  <button type="submit">[삭제하기]</button>
+</form>
+<hr>
+{% endif %}
+
+<form method="POST" action="{% url 'articles:comments_create' article.pk %}">
+  {% csrf_token %}
+  {{ comment_form.as_p }}
+  {% if user.is_authenticated %}
+    <button type="submit">생성하기</button>
+  {% else %}
+    <a href="{% url 'accounts:login'%}">[로그인]</a>
+  {% endif %}
+</form>
+
+<ul>
+  {% for comment in comments %}
+    <li>
+      {{ comment.pk }}. 작성자ID: {{ comment.user }}, 닉네임 {{ comment.nickname }}의 답글: {{ comment.content }}
+      {% if user.is_authenticated %}
+      <form action="{% url 'articles:comments_delete' article.pk comment.pk %}" method="POST">
+        {% csrf_token %}
+        {% if comment.user == request.user %}
+          <button class="btn btn-danger" type="submit">삭제하기</button>
+        {% endif %}
+        {% comment %} {% else %}
+          <a href="{% url 'accounts:login'%}">[로그인]</a> {% endcomment %}
+      </form>
+      {% endif %}
+    </li>
+    {% empty %}
+      <p>아직 댓글이 없습니다</p>
+  {% endfor %}
+</ul>
+
+{% include 'articles/_follow.html' %}
+
+{% endblock container %}
