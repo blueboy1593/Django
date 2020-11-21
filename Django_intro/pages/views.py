@@ -127,4 +127,5 @@ def static_example(request):
     return render(request, 'static_example.html')
 
 
-
+def practice(request):
+    return render(request, 'practice.html')

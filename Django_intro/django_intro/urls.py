@@ -39,4 +39,5 @@ urlpatterns = [
     path('lotto/', views.lotto),
     path('lotto_pick/', views.lotto_pick),
     path('lotto_result/', views.lotto_result),
+    path('practice/', views.practice),
 ]
